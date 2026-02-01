@@ -26,12 +26,12 @@
 ##  Overview / Panoramica
 
 ### English
-LEVIATHAN OS v3.0 is a **safety-critical, high-reliability firmware** engineered for the ESP32-C3 RISC-V architecture. Designed for professional red teaming operations and critical infrastructure auditing, it elevates the standard of portable security devices through an industrial-grade design philosophy.
+LEVIATHAN OS v0.1.0-alpha  is a **safety-critical, high-reliability firmware** engineered for the ESP32-C3 RISC-V architecture. Designed for professional red teaming operations and critical infrastructure auditing, it elevates the standard of portable security devices through an industrial-grade design philosophy.
 
 The system provides comprehensive RF spectrum analysis, WiFi security testing, BLE device emulation, and credential harvesting capabilities through a robust FreeRTOS-based architecture with deterministic memory management.
 
 ### Italiano
-LEVIATHAN OS v3.0 è un firmware **safety-critical ad alta affidabilità** ingegnerizzato per l'architettura ESP32-C3 RISC-V. Progettato per operazioni di red teaming professionale e audit di infrastrutture critiche, eleva lo standard dei dispositivi portatili di sicurezza grazie a una filosofia di derivazione industriale.
+LEVIATHAN OS v0.1.0-alpha è un firmware **safety-critical ad alta affidabilità** ingegnerizzato per l'architettura ESP32-C3 RISC-V. Progettato per operazioni di red teaming professionale e audit di infrastrutture critiche, eleva lo standard dei dispositivi portatili di sicurezza grazie a una filosofia di derivazione industriale.
 
 Il sistema fornisce analisi completa dello spettro RF, test di sicurezza WiFi, emulazione dispositivi BLE e raccolta credenziali attraverso un'architettura robusta basata su FreeRTOS con gestione deterministica della memoria.
 
@@ -535,6 +535,7 @@ jammerclaud/
 **License:** Proprietary - For Authorized Security Research Only
 
 **Copyright:** © 2026. All rights reserved.
+
 
 
 
