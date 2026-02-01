@@ -1,4 +1,4 @@
-# 🐲 LEVIATHAN OS v1.0
+# 🐲 LEVIATHAN OS v0.1.0-alpha
 **Professional-Grade Security Audit & RF Research Firmware**
 
 [![Platform](https://img.shields.io/badge/Platform-ESP32--C3%20RISC--V-blue.svg)](https://www.espressif.com/en/products/socs/esp32-c3)
@@ -535,6 +535,7 @@ jammerclaud/
 **License:** Proprietary - For Authorized Security Research Only
 
 **Copyright:** © 2026. All rights reserved.
+
 
 
 
