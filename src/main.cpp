@@ -4,42 +4,50 @@
  * ======================================================================================
  */
 
+#include <Arduino.h>
 #include "config.h"
 #include "hardware.h"
 #include "attacks.h"
 #include "ui.h"
 #include "web_interface.h"
+#include "nvs_flash.h" // Necessario per le funzioni nvs_
 
-
+// --- GLOBALS ---
 TaskHandle_t attackTaskHandle = NULL;
 
 // --- TASKS ---
 void attackTask(void *parameter) {
-    
     for(;;) {
-      
         AttackEngine::getInstance().runLoop();
-        
-
         vTaskDelay(10 / portTICK_PERIOD_MS);
-
-        // [Debug] Check stack usage
-        // uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
-        // if (uxHighWaterMark < 500) Serial.println("[WARN] Low Stack!");
     }
 }
 
-// --- STANDARD ARDUINO ---
-
+// --- SINGLE CONSOLIDATED SETUP ---
 void setup() {
-    // 1. Initialize Hardware Abstraction Layer
+    // 0. Serial Init
+    Serial.begin(115200);
+    delay(2000); 
+    Serial.println("\n--- [ LEVIATHAN OS v3.0 BOOT ] ---");
+
+    // 1. Inizializza NVS (Fondamentale per la stabilità)
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        Serial.println("Formattazione NVS in corso...");
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK(ret);
+    Serial.println("Memoria NVS Pronta.");
+
+    // 2. Initialize Hardware Abstraction Layer
     Hardware::getInstance().init();
     
-    // 2. Initialize Engines
+    // 3. Initialize Engines
     AttackEngine::getInstance().init();
     UI::getInstance().init();
     
-    // 3. Create High Priority Attack Task with Integrity Check
+    // 4. Create High Priority Attack Task with Integrity Check
     BaseType_t result = xTaskCreate(
         attackTask,       
         "AttackCore",     

