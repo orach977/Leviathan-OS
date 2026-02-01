@@ -469,7 +469,7 @@ Il sistema utilizza la memoria non volatile (NVS) dell'ESP32 per dati persistent
 #### PlatformIO (Raccomandato)
 1. Clona la repository:
    ```bash
-   git clone https://github.com/orach977/ironclad-by-orach977
+   git clone https://github.com/orach977/Leviathan-OS)
    ```
 2. Apri la cartella in VS Code con l'estensione PlatformIO
 3. Configura [`config.h`](config.h:20):
@@ -535,4 +535,5 @@ jammerclaud/
 **License:** Proprietary - For Authorized Security Research Only
 
 **Copyright:** © 2026. All rights reserved.
+
 
