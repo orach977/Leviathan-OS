@@ -38,7 +38,7 @@ Il sistema fornisce analisi completa dello spettro RF, test di sicurezza WiFi, e
 ---
 
 <a name="philosophy"></a>
-##  Philosophy & Stability / Filosofia e Stabilità (MIL-STD Grade)
+##  Philosophy & Stability / Filosofia e Stabilità 
 
 ### English
 Unlike hobbyist tools, Leviathan is engineered to never fail during prolonged operations:
@@ -535,3 +535,4 @@ jammerclaud/
 **License:** Proprietary - For Authorized Security Research Only
 
 **Copyright:** © 2026. All rights reserved.
+
