@@ -423,6 +423,13 @@ Il sistema utilizza la memoria non volatile (NVS) dell'ESP32 per dati persistent
 <a name="install"></a>
 ##  Installation & Build / Installazione e Compilazione
 
+### 📦 Pre-built Binaries / Binari Pre-compilati
+
+**Version v0.1.0-alpha is now available!**
+Pre-compiled firmware binaries are available in the releases section for immediate flashing.
+
+---
+
 ### English
 
 #### Prerequisites

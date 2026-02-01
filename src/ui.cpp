@@ -40,7 +40,7 @@ void UI::init() {
     disp.print("LEVIATHAN");
     disp.setTextSize(1);
     disp.setCursor(35, 25);
-    disp.print("MIL-STD v3.0");
+    disp.print("v0.1.0-alpha");
     disp.display();
     delay(2000);
 }
