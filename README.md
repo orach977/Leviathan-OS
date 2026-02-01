@@ -1,3 +1,20 @@
+<div align="center">
+  <img src="assets/logo.png" alt="Leviathan-OS Logo" width="250" height="auto">
+  <h1>Leviathan-OS</h1>
+  <p>
+    <b>Advanced Firmware for ESP32-C3 Architecture</b>
+  </p>
+  <p>
+    <a href="https://github.com/orach977/Leviathan-OS/releases/latest">
+      <img src="https://img.shields.io/github/v/release/orach977/Leviathan-OS?style=for-the-badge&color=blue" alt="Latest Release">
+    </a>
+    <img src="https://img.shields.io/badge/PLATFORM-ESP32--C3-orange?style=for-the-badge&logo=espressif" alt="Platform ESP32-C3">
+    <img src="https://img.shields.io/badge/STATUS-ALPHA-red?style=for-the-badge" alt="Status Alpha">
+  </p>
+  <br>
+</div>
+
+
 # 🐲 LEVIATHAN OS v0.1.0-alpha
 **Professional-Grade Security Audit & RF Research Firmware**
 
