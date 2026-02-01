@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.png" alt="Leviathan-OS Logo" width="300" height="auto">
+  <img src="assets/logo.png" alt="Leviathan-OS Logo" width="500" height="auto">
   <h1>LEVIATHAN OS v0.1.0-alpha</h1>
   <p>
     <b>Professional-Grade Security Audit & RF Research Firmware</b>
@@ -551,6 +551,7 @@ jammerclaud/
 **License:** Proprietary - For Authorized Security Research Only
 
 **Copyright:** © 2026. All rights reserved.
+
 
 
 
