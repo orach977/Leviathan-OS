@@ -1,8 +1,8 @@
 <div align="center">
   <img src="assets/logo.png" alt="Leviathan-OS Logo" width="250" height="auto">
-  <h1>Leviathan-OS</h1>
+  <h1>LEVIATHAN OS v0.1.0-alpha</h1>
   <p>
-    <b>Advanced Firmware for ESP32-C3 Architecture</b>
+    <b>Professional-Grade Security Audit & RF Research Firmware</b>
   </p>
   <p>
     <a href="https://github.com/orach977/Leviathan-OS/releases/latest">
@@ -13,14 +13,6 @@
   </p>
   <br>
 </div>
-
-
-# 🐲 LEVIATHAN OS v0.1.0-alpha
-**Professional-Grade Security Audit & RF Research Firmware**
-
-[![Platform](https://img.shields.io/badge/Platform-ESP32--C3%20RISC--V-blue.svg)](https://www.espressif.com/en/products/socs/esp32-c3)
-[![Framework](https://img.shields.io/badge/Framework-FreeRTOS-green.svg)](https://www.freertos.org/)
-[![Status](https://img.shields.io/badge/Status-Operational-brightgreen.svg)]()
 
 ---
 
@@ -559,6 +551,7 @@ jammerclaud/
 **License:** Proprietary - For Authorized Security Research Only
 
 **Copyright:** © 2026. All rights reserved.
+
 
 
 
