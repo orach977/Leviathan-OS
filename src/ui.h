@@ -32,6 +32,7 @@ private:
     // Menus
     void renderMainMenu();
     void renderWiFiMenu();
+    void renderBLEMenu();
     void renderScanList();
     
     // Actions

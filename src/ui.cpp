@@ -20,6 +20,9 @@ const int mainOptsCount = 5;
 const char* wifiOpts[] = {"SCAN TARGETS", "DEAUTH TGT", "BEACON FLOOD", "PROBE SNIFF", "BACK"};
 const int wifiOptsCount = 5;
 
+const char* bleOpts[] = {"APPLE SOUR", "SAMSUNG", "WINDOWS", "GOOGLE", "BACK"};
+const int bleOptsCount = 5;
+
 UI& UI::getInstance() {
     static UI instance;
     return instance;
@@ -81,6 +84,7 @@ void UI::update() {
         switch(state.menuLvl) {
             case 0: renderMainMenu(); break;
             case 1: renderWiFiMenu(); break;
+            case 2: renderBLEMenu(); break;
             case 10: renderScanList(); break;
             default: renderMainMenu(); break;
         }
@@ -142,6 +146,23 @@ void UI::renderWiFiMenu() {
     drawScrollbar(wifiOptsCount, state.cursor);
 }
 
+void UI::renderBLEMenu() {
+    auto& disp = Hardware::getInstance().getDisplay();
+    for(int i=0; i<3; i++) {
+        int idx = (state.cursor/3)*3 + i;
+        if(idx >= bleOptsCount) break;
+        
+        int yPos = 9 + (i * 8);
+        disp.setCursor(0, yPos);
+        
+        if(idx == state.cursor) disp.print(">");
+        else disp.print(" ");
+        
+        disp.print(bleOpts[idx]);
+    }
+    drawScrollbar(bleOptsCount, state.cursor);
+}
+
 void UI::renderScanList() {
     auto& disp = Hardware::getInstance().getDisplay();
     if(scanCount == 0) {
@@ -197,6 +218,7 @@ void UI::handleInput(int key) {
     int max = 0;
     if(state.menuLvl == 0) max = mainOptsCount - 1;
     if(state.menuLvl == 1) max = wifiOptsCount - 1;
+    if(state.menuLvl == 2) max = bleOptsCount - 1;
     if(state.menuLvl == 10) max = (scanCount > 0) ? (int)scanCount - 1 : 0;
     
     if(state.cursor < 0) state.cursor = 0;
@@ -209,8 +231,9 @@ void UI::handleInput(int key) {
 
 void UI::executeAction(int index) {
     if(state.menuLvl == 0) {
-        if(index == 0) { state.menuLvl = 1; state.cursor = 0; } // WiFi
-        else if(index == 3) { // Evil Twin
+        if(index == 0) { state.menuLvl = 1; state.cursor = 0; }
+        else if(index == 1) { state.menuLvl = 2; state.cursor = 0; }
+        else if(index == 3) {
             WebInterface::getInstance().start(true);
             state.currentAttack = AttackType::EVIL_TWIN;
             AttackEngine::getInstance().setAttack(AttackType::EVIL_TWIN);
@@ -239,14 +262,30 @@ void UI::executeAction(int index) {
              AttackEngine::getInstance().setAttack(AttackType::PROBE_SNIFF);
         }
     }
-    else if(state.menuLvl == 10) { // Scan Results
+    else if(state.menuLvl == 2) {
+        if(index == 0) {
+            state.currentAttack = AttackType::BLE_SOUR;
+            AttackEngine::getInstance().setAttack(AttackType::BLE_SOUR);
+        }
+        else if(index == 1) {
+            state.currentAttack = AttackType::BLE_SAMS;
+            AttackEngine::getInstance().setAttack(AttackType::BLE_SAMS);
+        }
+        else if(index == 2) {
+            state.currentAttack = AttackType::BLE_WIN;
+            AttackEngine::getInstance().setAttack(AttackType::BLE_WIN);
+        }
+        else if(index == 3) {
+            state.currentAttack = AttackType::BLE_GOOGLE;
+            AttackEngine::getInstance().setAttack(AttackType::BLE_GOOGLE);
+        }
+    }
+    else if(state.menuLvl == 10) {
         if(scanCount > 0) {
             APInfo& target = scanResults[index];
             AttackEngine::getInstance().setTarget(target.bssid, target.ch);
-            
-            // Auto-return to WiFi menu ready to attack
             state.menuLvl = 1;
-            state.cursor = 1; // Highlight Deauth
+            state.cursor = 1;
         }
     }
 }
