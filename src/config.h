@@ -12,31 +12,40 @@
 // ======================================================================================
 // 0. DEPLOYMENT PROFILE (OPERATIONAL CONTEXT)
 // ======================================================================================
-#define MODE_DEV            0   // Development: Logs enabled, weak security permitted
-#define MODE_OPS            1   // Operations: Stealth, Hardened, Strict Checks
+#define MODE_DEV            0   
+#define MODE_OPS            1   
 
 // [SELECTOR] Choose Operational Mode
-#define SYSTEM_MODE         MODE_OPS 
+#define SYSTEM_MODE         MODE_DEV
 
 // [SELECTOR] Resource Profile
-#define PROFILE_STEALTH     0   // Low memory footprint, silent
-#define PROFILE_PERFORMANCE 1   // Max buffers, aggressive
+#define PROFILE_STEALTH     0   
+#define PROFILE_PERFORMANCE 1   
 
 #define RESOURCE_PROFILE    PROFILE_PERFORMANCE
 
 // ======================================================================================
-// 1. HARDWARE PINOUT (PHYSICAL LAYER)
+// 1. HARDWARE PINOUT (PHYSICAL LAYER) 
 // ======================================================================================
+
+// I2C Display (OLED)
 #define PIN_SDA         0
 #define PIN_SCL         1
-#define PIN_BTN_A       9
-#define PIN_BTN_B       10
-#define PIN_BTN_C       20
-#define PIN_BTN_D       21
-#define PIN_LED_R       5
-#define PIN_LED_G       6
-#define PIN_NRF_CE      8
-#define PIN_NRF_CSN     7
+
+// Tasti Controllo (Input Pullup)
+#define PIN_BTN_A       9   
+#define PIN_BTN_B       10  
+#define PIN_BTN_C       20  
+#define PIN_BTN_D       21  
+
+// LED di Stato (Spostati per liberare SPI)
+#define PIN_LED_R       3   
+#define PIN_LED_G       4   
+
+// NRF24L01+ Radio Control
+#define PIN_NRF_CE      2   
+#define PIN_NRF_CSN     8   
+
 
 // --- MATRIX PIN INTEGRITY CHECKS  ---
 #if (PIN_SDA == PIN_SCL) || (PIN_SDA == PIN_LED_R) || (PIN_SDA == PIN_NRF_CE)
@@ -63,10 +72,10 @@
 // ======================================================================================
 // 3. SYSTEM SECURITY & INTEGRITY
 // ======================================================================================
-#define SAFE_MODE             false      // Hardware Safety Interlock
-#define WATCHDOG_TIMEOUT_MS   5000       // WDT Reset threshold
-#define NVS_MAGIC_KEY         0x4C563231 // "LV21" Signature
-#define MIN_RSSI_THRESHOLD    -85        // Target viability floor
+#define SAFE_MODE             false   
+#define WATCHDOG_TIMEOUT_MS   5000       
+#define NVS_MAGIC_KEY         0x4C563231 
+#define MIN_RSSI_THRESHOLD    -85        
 
 // Buffer Sizes based on Profile
 #if RESOURCE_PROFILE == PROFILE_PERFORMANCE
@@ -92,10 +101,10 @@
 #define WIFI_SSID_AP          "LEVIATHAN_NET"
 
 // Security Configuration
-#define USE_DYNAMIC_AUTH      true       // Salted Password Generation
+#define USE_DYNAMIC_AUTH      true       
 
 // Static Password Configuration
-#define WIFI_PASS_FALLBACK    "L3v!@th4n_X9z" // Stronger default
+#define WIFI_PASS_FALLBACK    "L3v!@th4n_X9z" 
 
 // [SEC-CRITICAL] PREVENT WEAK PASSWORD IN OPS MODE
 #if (SYSTEM_MODE == MODE_OPS) && !USE_DYNAMIC_AUTH
@@ -105,7 +114,7 @@
 #endif
 
 #define WEB_PORT              80
-#define WEB_SESSION_TIMEOUT   300000     // 5 Minutes
+#define WEB_SESSION_TIMEOUT   300000     
 
 // Client limits based on profile
 #if RESOURCE_PROFILE == PROFILE_PERFORMANCE
@@ -120,10 +129,10 @@
 // Log Levels: 0=SILENT, 1=ERROR, 2=WARN, 3=INFO, 4=DEBUG
 
 #if SYSTEM_MODE == MODE_OPS
-    #define SYSTEM_LOG_LEVEL  1   // ERROR ONLY in Operations
-    #define ENABLE_SERIAL_LOG false // Disable Serial (Silent)
+    #define SYSTEM_LOG_LEVEL  1   
+    #define ENABLE_SERIAL_LOG false 
 #else
-    #define SYSTEM_LOG_LEVEL  4   // DEBUG in Dev
+    #define SYSTEM_LOG_LEVEL  4   
     #define ENABLE_SERIAL_LOG true
 #endif
 
