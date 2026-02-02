@@ -10,8 +10,7 @@
 #include "attacks.h"
 #include "ui.h"
 #include "web_interface.h"
-#include "nvs_flash.h" // Necessario per le funzioni nvs_
-
+#include "nvs_flash.h" 
 // --- GLOBALS ---
 TaskHandle_t attackTaskHandle = NULL;
 
@@ -23,54 +22,54 @@ void attackTask(void *parameter) {
     }
 }
 
-// --- SINGLE CONSOLIDATED SETUP ---
 void setup() {
     // 0. Serial Init
     Serial.begin(115200);
     delay(2000); 
-    Serial.println("\n--- [ LEVIATHAN OS v3.0 BOOT ] ---");
+    Serial.println("\n--- [ Leviathan OS v 0.1.0 alpha BOOT ] ---");
 
-    // 1. Inizializza NVS (Fondamentale per la stabilità)
+    // 1. Initialize NVS Flash
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-        Serial.println("Formattazione NVS in corso...");
         ESP_ERROR_CHECK(nvs_flash_erase());
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
-    Serial.println("Memoria NVS Pronta.");
+    Serial.println("nvs_flash initialized.");
 
-    // 2. Initialize Hardware Abstraction Layer
+    // 2. Initialize Hardware HAL
     Hardware::getInstance().init();
+
+    // --- TEST LED ---
+    Serial.println("loading test LEDs...");
+     // ----------------------------------------------
+    pinMode(3, OUTPUT); 
+    pinMode(4, OUTPUT); 
     
+    digitalWrite(3, HIGH);
+    digitalWrite(4, HIGH);
+    delay(2000); 
+    digitalWrite(3, LOW);
+    digitalWrite(4, LOW);
+    // ----------------------------------------------
+
     // 3. Initialize Engines
     AttackEngine::getInstance().init();
     UI::getInstance().init();
     
-    // 4. Create High Priority Attack Task with Integrity Check
+    // 4. Create Attack Task
     BaseType_t result = xTaskCreate(
-        attackTask,       
-        "AttackCore",     
-        ATTACK_TASK_STACK,
-        NULL,             
-        ATTACK_TASK_PRIO, 
-        &attackTaskHandle 
+        attackTask, "AttackCore", ATTACK_TASK_STACK, NULL, ATTACK_TASK_PRIO, &attackTaskHandle 
     );
 
-    // Critical Failure Detection
     if (result != pdPASS || attackTaskHandle == NULL) {
-        if (ENABLE_SERIAL_LOG) Serial.println("[CRITICAL] Failed to create Attack Task!");
-        
-        // Fault State Indication (Infinite Blink)
         while(1) {
-            Hardware::getInstance().setLed(true);
-            delay(100);
-            Hardware::getInstance().setLed(false);
-            delay(100);
+            digitalWrite(3, HIGH); delay(100);
+            digitalWrite(3, LOW);  delay(100);
         }
     }
     
-    if (ENABLE_SERIAL_LOG) Serial.println("[BOOT] Leviathan OS v3.0 Ready (RTOS OK)");
+    if (ENABLE_SERIAL_LOG) Serial.println("[BOOT] Leviathan OS v 0.1.0 alpha (RTOS OK)");
 }
 
 void loop() {
