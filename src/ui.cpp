@@ -23,6 +23,15 @@ const int wifiOptsCount = 5;
 const char* bleOpts[] = {"APPLE SOUR", "SAMSUNG", "WINDOWS", "GOOGLE", "BACK"};
 const int bleOptsCount = 5;
 
+const char* rf24Opts[] = {"SPECTRUM", "JAMMER", "CARRIER DETECT", "BACK"};
+const int rf24OptsCount = 4;
+
+const char* evilTwinOpts[] = {"START", "STOP", "VIEW CREDS", "BACK"};
+const int evilTwinOptsCount = 4;
+
+const char* defenseOpts[] = {"DEAUTH DETECT", "LOGS", "BACK"};
+const int defenseOptsCount = 3;
+
 UI& UI::getInstance() {
     static UI instance;
     return instance;
@@ -85,6 +94,9 @@ void UI::update() {
             case 0: renderMainMenu(); break;
             case 1: renderWiFiMenu(); break;
             case 2: renderBLEMenu(); break;
+            case 3: renderRF24Menu(); break;
+            case 4: renderEvilTwinMenu(); break;
+            case 5: renderDefenseMenu(); break;
             case 10: renderScanList(); break;
             default: renderMainMenu(); break;
         }
@@ -163,6 +175,57 @@ void UI::renderBLEMenu() {
     drawScrollbar(bleOptsCount, state.cursor);
 }
 
+void UI::renderRF24Menu() {
+    auto& disp = Hardware::getInstance().getDisplay();
+    for(int i=0; i<3; i++) {
+        int idx = (state.cursor/3)*3 + i;
+        if(idx >= rf24OptsCount) break;
+        
+        int yPos = 9 + (i * 8);
+        disp.setCursor(0, yPos);
+        
+        if(idx == state.cursor) disp.print(">");
+        else disp.print(" ");
+        
+        disp.print(rf24Opts[idx]);
+    }
+    drawScrollbar(rf24OptsCount, state.cursor);
+}
+
+void UI::renderEvilTwinMenu() {
+    auto& disp = Hardware::getInstance().getDisplay();
+    for(int i=0; i<3; i++) {
+        int idx = (state.cursor/3)*3 + i;
+        if(idx >= evilTwinOptsCount) break;
+        
+        int yPos = 9 + (i * 8);
+        disp.setCursor(0, yPos);
+        
+        if(idx == state.cursor) disp.print(">");
+        else disp.print(" ");
+        
+        disp.print(evilTwinOpts[idx]);
+    }
+    drawScrollbar(evilTwinOptsCount, state.cursor);
+}
+
+void UI::renderDefenseMenu() {
+    auto& disp = Hardware::getInstance().getDisplay();
+    for(int i=0; i<3; i++) {
+        int idx = (state.cursor/3)*3 + i;
+        if(idx >= defenseOptsCount) break;
+        
+        int yPos = 9 + (i * 8);
+        disp.setCursor(0, yPos);
+        
+        if(idx == state.cursor) disp.print(">");
+        else disp.print(" ");
+        
+        disp.print(defenseOpts[idx]);
+    }
+    drawScrollbar(defenseOptsCount, state.cursor);
+}
+
 void UI::renderScanList() {
     auto& disp = Hardware::getInstance().getDisplay();
     if(scanCount == 0) {
@@ -219,6 +282,9 @@ void UI::handleInput(int key) {
     if(state.menuLvl == 0) max = mainOptsCount - 1;
     if(state.menuLvl == 1) max = wifiOptsCount - 1;
     if(state.menuLvl == 2) max = bleOptsCount - 1;
+    if(state.menuLvl == 3) max = rf24OptsCount - 1;
+    if(state.menuLvl == 4) max = evilTwinOptsCount - 1;
+    if(state.menuLvl == 5) max = defenseOptsCount - 1;
     if(state.menuLvl == 10) max = (scanCount > 0) ? (int)scanCount - 1 : 0;
     
     if(state.cursor < 0) state.cursor = 0;
@@ -233,11 +299,9 @@ void UI::executeAction(int index) {
     if(state.menuLvl == 0) {
         if(index == 0) { state.menuLvl = 1; state.cursor = 0; }
         else if(index == 1) { state.menuLvl = 2; state.cursor = 0; }
-        else if(index == 3) {
-            WebInterface::getInstance().start(true);
-            state.currentAttack = AttackType::EVIL_TWIN;
-            AttackEngine::getInstance().setAttack(AttackType::EVIL_TWIN);
-        }
+        else if(index == 2) { state.menuLvl = 3; state.cursor = 0; }
+        else if(index == 3) { state.menuLvl = 4; state.cursor = 0; }
+        else if(index == 4) { state.menuLvl = 5; state.cursor = 0; }
     }
     else if(state.menuLvl == 1) { // WiFi Menu
         if(index == 0) { // Scan
@@ -278,6 +342,61 @@ void UI::executeAction(int index) {
         else if(index == 3) {
             state.currentAttack = AttackType::BLE_GOOGLE;
             AttackEngine::getInstance().setAttack(AttackType::BLE_GOOGLE);
+        }
+    }
+    else if(state.menuLvl == 3) {
+        if(index == 0) {
+            state.currentAttack = AttackType::RF_SCAN;
+            AttackEngine::getInstance().setAttack(AttackType::RF_SCAN);
+        }
+        else if(index == 1) {
+            state.currentAttack = AttackType::RF_JAM;
+            AttackEngine::getInstance().setAttack(AttackType::RF_JAM);
+        }
+        else if(index == 2) {
+            Hardware::getInstance().scanSpectrum(rfSpectrum);
+        }
+    }
+    else if(state.menuLvl == 4) {
+        if(index == 0) {
+            WebInterface::getInstance().start(true);
+            state.currentAttack = AttackType::EVIL_TWIN;
+            AttackEngine::getInstance().setAttack(AttackType::EVIL_TWIN);
+        }
+        else if(index == 1) {
+            WebInterface::getInstance().stop();
+            AttackEngine::getInstance().stopAttack();
+            state.currentAttack = AttackType::NONE;
+        }
+        else if(index == 2) {
+            auto creds = Hardware::getInstance().loadCreds();
+            if(creds.empty()) {
+                scanCount = 0;
+            } else {
+                scanCount = creds.size();
+                for(size_t i=0; i<creds.size() && i<MAX_SCAN_RESULTS; i++) {
+                    safeStrCopy(scanResults[i].ssid, creds[i].data, sizeof(scanResults[i].ssid));
+                }
+            }
+            state.menuLvl = 10;
+            state.cursor = 0;
+        }
+    }
+    else if(state.menuLvl == 5) {
+        if(index == 0) {
+            state.currentAttack = AttackType::DEAUTH_DETECT;
+            AttackEngine::getInstance().setAttack(AttackType::DEAUTH_DETECT);
+        }
+        else if(index == 1) {
+            int deauthCount = AttackEngine::getInstance().getDeauthCount();
+            char logBuf[32];
+            snprintf(logBuf, sizeof(logBuf), "DEAUTH: %d", deauthCount);
+            auto& disp = Hardware::getInstance().getDisplay();
+            disp.clearDisplay();
+            disp.setCursor(0, 10);
+            disp.print(logBuf);
+            disp.display();
+            delay(2000);
         }
     }
     else if(state.menuLvl == 10) {

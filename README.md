@@ -308,9 +308,25 @@ Main Menu
 │   ├── PROBE SNIFF
 │   └── BACK
 ├── BLE OPS
+│   ├── APPLE SOUR
+│   ├── SAMSUNG
+│   ├── WINDOWS
+│   ├── GOOGLE
+│   └── BACK
 ├── RF24 OPS
+│   ├── SPECTRUM
+│   ├── JAMMER
+│   ├── CARRIER DETECT
+│   └── BACK
 ├── EVIL TWIN
+│   ├── START
+│   ├── STOP
+│   ├── VIEW CREDS
+│   └── BACK
 └── DEFENSE
+    ├── DEAUTH DETECT
+    ├── LOGS
+    └── BACK
 ```
 
 ### Italiano
@@ -334,9 +350,25 @@ Menu Principale
 │   ├── PROBE SNIFF
 │   └── BACK
 ├── BLE OPS
+│   ├── APPLE SOUR
+│   ├── SAMSUNG
+│   ├── WINDOWS
+│   ├── GOOGLE
+│   └── BACK
 ├── RF24 OPS
+│   ├── SPECTRUM
+│   ├── JAMMER
+│   ├── CARRIER DETECT
+│   └── BACK
 ├── EVIL TWIN
+│   ├── START
+│   ├── STOP
+│   ├── VIEW CREDS
+│   └── BACK
 └── DEFENSE
+    ├── DEAUTH DETECT
+    ├── LOGS
+    └── BACK
 ```
 
 ---

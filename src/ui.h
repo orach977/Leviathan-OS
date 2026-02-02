@@ -33,6 +33,9 @@ private:
     void renderMainMenu();
     void renderWiFiMenu();
     void renderBLEMenu();
+    void renderRF24Menu();
+    void renderEvilTwinMenu();
+    void renderDefenseMenu();
     void renderScanList();
     
     // Actions
