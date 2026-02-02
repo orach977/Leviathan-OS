@@ -20,14 +20,15 @@
 1. [ Overview / Panoramica](#overview)
 2. [ Philosophy & Stability / Filosofia e Stabilità](#philosophy)
 3. [ Core Capabilities / Funzionalità Principali](#capabilities)
-4. [ Hardware Specifications / Specifiche Hardware](#hardware)
-5. [ Software Architecture / Architettura Software](#architecture)
-6. [ Configuration Parameters / Parametri di Configurazione](#config)
-7. [ User Interface / Interfaccia Utente](#ui)
-8. [ Web Interface & API](#api)
-9. [ Data Storage & Security / Archiviazione Dati e Sicurezza](#storage)
-10. [ Installation & Build / Installazione e Compilazione](#install)
-11. [ Legal Disclaimer / Avvertenze Legali](#legal)
+4. [ Reliability & Diagnostics / Affidabilità e Diagnostica](#diagnostics)
+5. [ Hardware Specifications / Specifiche Hardware](#hardware)
+6. [ Software Architecture / Architettura Software](#architecture)
+7. [ Configuration Parameters / Parametri di Configurazione](#config)
+8. [ User Interface / Interfaccia Utente](#ui)
+9. [ Web Interface & API](#api)
+10. [ Data Storage & Security / Archiviazione Dati e Sicurezza](#storage)
+11. [ Installation & Build / Installazione e Compilazione](#install)
+12. [ Legal Disclaimer / Avvertenze Legali](#legal)
 
 ---
 
@@ -123,6 +124,29 @@ A differenza dei tool hobbistici, Leviathan è costruito per non fallire mai dur
 | **Analisi Spettro** | Visualizzazione spettro 2.4GHz real-time con risoluzione 128 canali |
 | **RF Jamming** | Generazione carrier costante con channel hopping rapido (0-80 canali) |
 | **Rilevamento Carrier** | Rilevamento segnali attivi sulla banda 2.4GHz |
+
+---
+
+<a name="diagnostics"></a>
+##  Reliability & Diagnostics / Affidabilità e Diagnostica
+
+### English
+To meet **MIL-STD** reliability requirements, the firmware includes an on-board Diagnostic Suite accessible via the `TEST SUITE` menu. This allows operators to verify hardware integrity before deployment.
+
+| Test | Function | Compliance Check |
+| :--- | :--- | :--- |
+| **SHOW HEAP** | Real-time RAM monitor | Detects memory leaks (value must remain stable). |
+| **FORCE WDT** | Simulates a CPU freeze | Verifies the Watchdog Timer. System **MUST** reboot automatically in 5s. |
+| **FILL NVS** | Storage stress test | Attempts to overflow credentials storage. Verifies safety limits and memory protection. |
+
+### Italiano
+Per soddisfare i requisiti di affidabilità **MIL-STD**, il firmware include una Suite Diagnostica integrata accessibile dal menu `TEST SUITE`. Permette agli operatori di verificare l'integrità hardware prima del deployment.
+
+| Test | Funzione | Verifica Conformità |
+| :--- | :--- | :--- |
+| **SHOW HEAP** | Monitor RAM real-time | Rileva memory leak (il valore deve restare stabile). |
+| **FORCE WDT** | Simula freeze della CPU | Verifica il Watchdog Timer. Il sistema **DEVE** riavviarsi automaticamente in 5s. |
+| **FILL NVS** | Stress test storage | Tenta di saturare l'archivio credenziali. Verifica i limiti di sicurezza e la protezione memoria. |
 
 ---
 
@@ -323,9 +347,14 @@ Main Menu
 │   ├── STOP
 │   ├── VIEW CREDS
 │   └── BACK
-└── DEFENSE
-    ├── DEAUTH DETECT
-    ├── LOGS
+├── DEFENSE
+│   ├── DEAUTH DETECT
+│   ├── LOGS
+│   └── BACK
+└── TEST SUITE
+    ├── SHOW HEAP
+    ├── FORCE WDT
+    ├── FILL NVS
     └── BACK
 ```
 
@@ -365,9 +394,14 @@ Menu Principale
 │   ├── STOP
 │   ├── VIEW CREDS
 │   └── BACK
-└── DEFENSE
-    ├── DEAUTH DETECT
-    ├── LOGS
+├── DEFENSE
+│   ├── DEAUTH DETECT
+│   ├── LOGS
+│   └── BACK
+└── TEST SUITE
+    ├── SHOW HEAP
+    ├── FORCE WDT
+    ├── FILL NVS
     └── BACK
 ```
 
