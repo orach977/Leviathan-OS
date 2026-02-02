@@ -134,28 +134,34 @@ A differenza dei tool hobbistici, Leviathan è costruito per non fallire mai dur
 | :--- | :--- | :--- | :--- |
 | **OLED SSD1306** | I2C SDA | **GPIO 0** | Serial Data Line |
 | | I2C SCL | **GPIO 1** | Serial Clock Line |
-| **NRF24L01+** | SPI CE | **GPIO 8** | Radio Chip Enable |
-| | SPI CSN | **GPIO 7** | SPI Chip Select |
+| **NRF24L01+** | SPI CE | **GPIO 2** | Radio Chip Enable |
+| | SPI CSN | **GPIO 8** | SPI Chip Select |
+| | SPI SCK | **GPIO 6** | SPI Clock |
+| | SPI MISO | **GPIO 5** | SPI MISO |
+| | SPI MOSI | **GPIO 7** | SPI MOSI |
 | **User Inputs** | Button A | **GPIO 9** | Confirm / Select |
 | | Button B | **GPIO 10** | Back / Abort |
 | | Button C | **GPIO 20** | Up Navigation |
 | | Button D | **GPIO 21** | Down Navigation |
-| **Diagnostics** | LED Red | **GPIO 5** | Fault / TX Activity |
-| | LED Green | **GPIO 6** | System Ready / Idle |
+| **Diagnostics** | LED Red | **GPIO 3** | Fault / TX Activity |
+| | LED Green | **GPIO 4** | System Ready / Idle |
 
 ### Italiano
 | Componente | Interfaccia | Pin ESP32-C3 | Descrizione |
 | :--- | :--- | :--- | :--- |
 | **OLED SSD1306** | I2C SDA | **GPIO 0** | Serial Data Line |
 | | I2C SCL | **GPIO 1** | Serial Clock Line |
-| **NRF24L01+** | SPI CE | **GPIO 8** | Radio Chip Enable |
-| | SPI CSN | **GPIO 7** | SPI Chip Select |
+| **NRF24L01+** | SPI CE | **GPIO 2** | Radio Chip Enable |
+| | SPI CSN | **GPIO 8** | SPI Chip Select |
+| | SPI SCK | **GPIO 6** | SPI Clock |
+| | SPI MISO | **GPIO 5** | SPI MISO |
+| | SPI MOSI | **GPIO 7** | SPI MOSI |
 | **Input Utente** | Pulsante A | **GPIO 9** | Conferma / Seleziona |
 | | Pulsante B | **GPIO 10** | Indietro / Annulla |
 | | Pulsante C | **GPIO 20** | Navigazione Su |
 | | Pulsante D | **GPIO 21** | Navigazione Giù |
-| **Diagnostica** | LED Rosso | **GPIO 5** | Errore / Attività TX |
-| | LED Verde | **GPIO 6** | Sistema Pronto / Idle |
+| **Diagnostica** | LED Rosso | **GPIO 3** | Errore / Attività TX |
+| | LED Verde | **GPIO 4** | Sistema Pronto / Idle |
 
 > [!IMPORTANT]
 > **English:** Solder a **10uF - 100uF** capacitor between VCC and GND pins of the NRF24L01+ module to prevent brownout resets.
