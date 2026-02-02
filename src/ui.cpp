@@ -46,6 +46,7 @@ UI::UI() : scanCount(0) {
 
 void UI::init() {
     auto& disp = Hardware::getInstance().getDisplay();
+    
     disp.clearDisplay();
     disp.setCursor(20, 10);
     disp.setTextSize(2);
@@ -54,7 +55,50 @@ void UI::init() {
     disp.setCursor(35, 25);
     disp.print("v0.1.0-alpha");
     disp.display();
-    delay(2000);
+    delay(1500);
+
+    const char* disclaimer[] = {
+        "User assumes ALL risk", 
+        "L'utente si assume",
+        "OGNI rischio d'uso.",
+        "Creator NOT liable",
+        "L'Autore NON risponde",
+        "di usi illeciti."
+    };
+
+    for(int p=0; p<2; p++) {
+        disp.clearDisplay();
+        disp.setTextSize(1);
+        disp.setCursor(0, 0);
+        disp.print(p == 0 ? "LEGAL TERMS:" : "LIABILITY:");
+        disp.drawFastHLine(0, 8, 128, WHITE);
+        disp.setCursor(0, 11); disp.print(disclaimer[p*3]);
+        disp.setCursor(0, 19); disp.print(disclaimer[p*3 + 1]);
+        disp.setCursor(0, 27); disp.print(disclaimer[p*3 + 2]);
+        disp.display();
+        delay(2500);
+    }
+
+    disp.clearDisplay();
+    disp.setCursor(0, 0);
+    disp.print("FINAL CONFIRM:");
+    disp.drawFastHLine(0, 8, 128, WHITE);
+    disp.setCursor(0, 12);
+    disp.print("Proceed = I ACCEPT");
+    disp.setCursor(0, 20);
+    disp.print("Procedi = ACCETTO");
+    disp.setCursor(0, 28);
+    disp.print("PRESS [A] TO START");
+    disp.display();
+    
+    while(true) {
+        int key = Hardware::getInstance().getKey();
+        if(key == 1) break; 
+        delay(50); 
+    }
+    
+    disp.clearDisplay();
+    disp.display();
 }
 
 void UI::update() {
