@@ -523,7 +523,7 @@ Pre-compiled firmware binaries are available in the releases section for immedia
 #### PlatformIO (Raccomandato)
 1. Clona la repository:
    ```bash
-   git clone https://github.com/orach977/Leviathan-OS)
+   git clone https://github.com/orach977/Leviathan-OS
    ```
 2. Apri la cartella in VS Code con l'estensione PlatformIO
 3. Configura [`config.h`](config.h:20):
@@ -571,7 +571,7 @@ Questo software è fornito rigorosamente per **scopi educativi** e **audit di si
 ##  Project Structure / Struttura del Progetto
 
 ```
-jammerclaud/
+Leviathan-os/
 ├── main.cpp              # Entry point with FreeRTOS task creation
 ├── config.h              # System configuration and pin definitions
 ├── types.h               # Data structures and enumerations
@@ -589,6 +589,8 @@ jammerclaud/
 **License:** Proprietary - For Authorized Security Research Only
 
 **Copyright:** © 2026. All rights reserved.
+
+
 
 
 
