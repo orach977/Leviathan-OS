@@ -78,7 +78,7 @@ void setup() {
     esp_task_wdt_init(WATCHDOG_TIMEOUT_MS / 1000, true); 
     esp_task_wdt_add(NULL); 
     
-    if (ENABLE_SERIAL_LOG) Serial.println("[BOOT] Leviathan OS v 0.1.0 alpha (RTOS OK)");
+    if (ENABLE_SERIAL_LOG) Serial.println("[BOOT] Leviathan OS v 0.2.0 alpha (RTOS OK)");
 }
 
 void loop() {

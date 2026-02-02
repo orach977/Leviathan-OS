@@ -41,7 +41,7 @@ LEVIATHAN OS v0.2.0-alpha  is a **safety-critical, high-reliability firmware** e
 The system provides comprehensive RF spectrum analysis, WiFi security testing, BLE device emulation, and credential harvesting capabilities through a robust FreeRTOS-based architecture with deterministic memory management.
 
 ### Italiano
-LEVIATHAN OS v0.1.0-alpha è un firmware **safety-critical ad alta affidabilità** ingegnerizzato per l'architettura ESP32-C3 RISC-V. Progettato per operazioni di red teaming professionale e audit di infrastrutture critiche, eleva lo standard dei dispositivi portatili di sicurezza grazie a una filosofia di derivazione industriale.
+LEVIATHAN OS v0.2.0-alpha è un firmware **safety-critical ad alta affidabilità** ingegnerizzato per l'architettura ESP32-C3 RISC-V. Progettato per operazioni di red teaming professionale e audit di infrastrutture critiche, eleva lo standard dei dispositivi portatili di sicurezza grazie a una filosofia di derivazione industriale.
 
 Il sistema fornisce analisi completa dello spettro RF, test di sicurezza WiFi, emulazione dispositivi BLE e raccolta credenziali attraverso un'architettura robusta basata su FreeRTOS con gestione deterministica della memoria.
 
@@ -510,7 +510,7 @@ Il sistema utilizza la memoria non volatile (NVS) dell'ESP32 per dati persistent
 
 ### 📦 Pre-built Binaries / Binari Pre-compilati
 
-**Version v0.1.0-alpha is now available!**
+**Version v0.2.0-alpha is now available!**
 Pre-compiled firmware binaries are available in the releases section for immediate flashing.
 
 ---
@@ -603,6 +603,26 @@ Questo software è fornito rigorosamente per **scopi educativi** e **audit di si
 - Ricerca sulla sicurezza con consenso scritto
 - Penetration testing sotto contratto
 - Dimostrazioni educative in ambienti controllati
+
+---
+
+##  Release Notes v0.2.0-alpha / Note di Rilascio v0.2.0-alpha
+
+### English
+**"The Iron Update"**
+
+* **New Feature:** Added "TEST SUITE" menu for hardware diagnostics.
+* **Stability:** Implemented  Watchdog Timer (WDT) for 5s auto-recovery.
+* **Fix:** Resolved boot-loop issues during UI initialization.
+* **System:** Added active Self-Healing capabilities.
+
+### Italiano
+**"The Iron Update"**
+
+* **Nuova Funzionalità:** Aggiunto menu "TEST SUITE" per diagnostica hardware.
+* **Stabilità:** Implementato Watchdog Timer (WDT)  per recupero automatico in 5s.
+* **Fix:** Risolti problemi di boot-loop durante l'inizializzazione UI.
+* **Sistema:** Aggiunte capacità di Self-Healing attive.
 
 ---
 

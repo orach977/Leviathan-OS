@@ -376,26 +376,32 @@ void UI::executeAction(int index) {
         else if(index == 2) { state.menuLvl = 3; state.cursor = 0; }
         else if(index == 3) { state.menuLvl = 4; state.cursor = 0; }
         else if(index == 4) { state.menuLvl = 5; state.cursor = 0; }
-        else if(index == 5) { state.menuLvl = 6; state.cursor = 0; } // <--- Accesso al Test Menu
+        else if(index == 5) { state.menuLvl = 6; state.cursor = 0; } 
     }
-    else if(state.menuLvl == 1) { // WiFi Menu
-        if(index == 0) { // Scan
+    else if(state.menuLvl == 1) { 
+        if(index == 0) { 
             Hardware::getInstance().drawHeader("SCANNING...", true);
             Hardware::getInstance().getDisplay().display();
             
             scanCount = AttackEngine::getInstance().scanNetworks(scanResults, MAX_SCAN_RESULTS);
             
-            state.menuLvl = 10; // View Results
+            if(scanCount == 0) {
+            }
+            
+            state.menuLvl = 10; 
             state.cursor = 0;
         }
-        else if(index == 1) { // Deauth
+        else if(index == 1) { 
              AttackEngine::getInstance().setAttack(AttackType::DEAUTH_TARGET);
         }
-        else if(index == 3) { // Probe Sniff
+        else if(index == 2) { 
+             AttackEngine::getInstance().setAttack(AttackType::BEACON_RANDOM);
+        }
+        else if(index == 3) { 
              AttackEngine::getInstance().setAttack(AttackType::PROBE_SNIFF);
         }
     }
-    else if(state.menuLvl == 2) { // BLE
+    else if(state.menuLvl == 2) { 
         if(index == 0) {
             state.currentAttack = AttackType::BLE_SOUR;
             AttackEngine::getInstance().setAttack(AttackType::BLE_SOUR);
@@ -413,7 +419,7 @@ void UI::executeAction(int index) {
             AttackEngine::getInstance().setAttack(AttackType::BLE_GOOGLE);
         }
     }
-    else if(state.menuLvl == 3) { // RF24
+    else if(state.menuLvl == 3) { 
         if(index == 0) {
             state.currentAttack = AttackType::RF_SCAN;
             AttackEngine::getInstance().setAttack(AttackType::RF_SCAN);
@@ -426,7 +432,7 @@ void UI::executeAction(int index) {
             Hardware::getInstance().scanSpectrum(rfSpectrum);
         }
     }
-    else if(state.menuLvl == 4) { // Evil Twin
+    else if(state.menuLvl == 4) { 
         if(index == 0) {
             WebInterface::getInstance().start(true);
             state.currentAttack = AttackType::EVIL_TWIN;
@@ -451,7 +457,7 @@ void UI::executeAction(int index) {
             state.cursor = 0;
         }
     }
-    else if(state.menuLvl == 5) { // Defense
+    else if(state.menuLvl == 5) { 
         if(index == 0) {
             state.currentAttack = AttackType::DEAUTH_DETECT;
             AttackEngine::getInstance().setAttack(AttackType::DEAUTH_DETECT);
@@ -496,27 +502,19 @@ void UI::executeAction(int index) {
             bool wifi_ok = (WiFi.status() != WL_NO_SHIELD);
             
             disp.clearDisplay();
-            disp.setCursor(0, 0);
-            disp.print("DIAG REPORT:");
+            disp.setCursor(0, 0); disp.print("DIAG REPORT:");
             disp.drawFastHLine(0, 8, 128, WHITE);
-            
-            disp.setCursor(0, 12);
-            disp.print("NRF24 RADIO: ");
-            disp.print(nrf_ok ? "OK" : "FAIL");
-            
-            disp.setCursor(0, 22);
-            disp.print("WIFI STACK:  ");
-            disp.print(wifi_ok ? "OK" : "FAIL");
-            
+            disp.setCursor(0, 12); disp.print("NRF24 RADIO: "); disp.print(nrf_ok ? "OK" : "FAIL");
+            disp.setCursor(0, 22); disp.print("WIFI STACK:  "); disp.print(wifi_ok ? "OK" : "FAIL");
             disp.display();
             
             while(Hardware::getInstance().getKey() == 0) { 
-                esp_task_wdt_reset();
+                esp_task_wdt_reset(); 
                 delay(50); 
             }
         }
     }
-    else if(state.menuLvl == 10) { // Scan Results
+    else if(state.menuLvl == 10) { 
         if(scanCount > 0) {
             APInfo& target = scanResults[index];
             AttackEngine::getInstance().setTarget(target.bssid, target.ch);
@@ -526,4 +524,3 @@ void UI::executeAction(int index) {
     }
 }
 
-// Chiude il Namespace (se presente) o fine file
