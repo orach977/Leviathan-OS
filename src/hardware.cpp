@@ -6,6 +6,7 @@
  */
 
 #include "hardware.h"
+#include <SPI.h> 
 
 Hardware& Hardware::getInstance() {
     static Hardware instance;
@@ -21,12 +22,13 @@ Hardware::Hardware()
 
 void Hardware::init() {
     initGPIO();
-
     if (!Wire.begin(PIN_SDA, PIN_SCL)) {
         if (ENABLE_SERIAL_LOG) Serial.println("[HW-ERR] I2C Bus Critical Failure!");
     }
 
     initDisplay();
+    
+ 
     initRadio();
 
     if (!prefs.begin("leviathan", false)) { 
@@ -79,13 +81,20 @@ void Hardware::initDisplay() {
     }
 }
 
+
 void Hardware::initRadio() {
-    if(radio.begin()) {
+    SPI.begin(6, 5, 7, 8); 
+    
+    if(radio.begin(&SPI)) {
         radio.setPALevel(RF24_PA_MAX);
         radio.setDataRate(RF24_2MBPS);
         radio.setAutoAck(false); 
+        if (ENABLE_SERIAL_LOG) Serial.println("[HW-INFO] Radio Initialized Correctly");
     } else {
-        if (ENABLE_SERIAL_LOG) Serial.println("[HW-ERR] NRF24 Radio Not Found!");
+        if (ENABLE_SERIAL_LOG) {
+            Serial.println("[HW-ERR] NRF24 Radio Not Found!");
+            Serial.println("CHECK: Wires on 6(SCK), 7(MOSI), 5(MISO)? Capacitor present?");
+        }
     }
 }
 
@@ -182,7 +191,6 @@ std::vector<StoredCred> Hardware::loadCreds() {
         
         if(c.length() > 0 && c.length() < MAX_INPUT_LEN) {
             StoredCred sc;
-            // [DRY] Using the helper logic embedded in StoredCred::set
             sc.set(c.c_str()); 
             creds.push_back(sc);
         }
