@@ -14,8 +14,9 @@
 #define UI_REFRESH_RATE_MS 50 
 
 // Menu Options Arrays
-const char* mainOpts[] = {"WIFI OPS", "BLE OPS", "RF24 OPS", "EVIL TWIN", "DEFENSE"};
-const int mainOptsCount = 5;
+
+const char* mainOpts[] = {"WIFI OPS", "BLE OPS", "RF24 OPS", "EVIL TWIN", "DEFENSE", "TEST SUITE"};
+const int mainOptsCount = 6;
 
 const char* wifiOpts[] = {"SCAN TARGETS", "DEAUTH TGT", "BEACON FLOOD", "PROBE SNIFF", "BACK"};
 const int wifiOptsCount = 5;
@@ -31,6 +32,10 @@ const int evilTwinOptsCount = 4;
 
 const char* defenseOpts[] = {"DEAUTH DETECT", "LOGS", "BACK"};
 const int defenseOptsCount = 3;
+
+
+const char* testOpts[] = {"SHOW HEAP", "FORCE WDT", "FILL NVS", "BACK"};
+const int testOptsCount = 4;
 
 UI& UI::getInstance() {
     static UI instance;
@@ -141,6 +146,7 @@ void UI::update() {
             case 3: renderRF24Menu(); break;
             case 4: renderEvilTwinMenu(); break;
             case 5: renderDefenseMenu(); break;
+            case 6: renderTestMenu(); break; 
             case 10: renderScanList(); break;
             default: renderMainMenu(); break;
         }
@@ -150,8 +156,6 @@ void UI::update() {
 }
 
 // Helper to draw scrollbar for 128x32 layout
-// Top offset: 9px (Header is 8px + 1px spacing)
-// Height available: 23px
 void drawScrollbar(int totalItems, int cursor) {
     auto& disp = Hardware::getInstance().getDisplay();
     if (totalItems <= 3) return; // No scroll needed
@@ -173,7 +177,6 @@ void UI::renderMainMenu() {
         int idx = (state.cursor/3)*3 + i;
         if(idx >= mainOptsCount) break;
         
-        // Layout: Y=9, Y=17, Y=25 
         int yPos = 9 + (i * 8);
         disp.setCursor(0, yPos);
         
@@ -270,6 +273,32 @@ void UI::renderDefenseMenu() {
     drawScrollbar(defenseOptsCount, state.cursor);
 }
 
+void UI::renderTestMenu() {
+    auto& disp = Hardware::getInstance().getDisplay();
+    
+    // Mostra le opzioni standard
+    for(int i=0; i<3; i++) {
+        int idx = (state.cursor/3)*3 + i;
+        if(idx >= testOptsCount) break;
+        
+        int yPos = 9 + (i * 8);
+        disp.setCursor(0, yPos);
+        
+        if(idx == state.cursor) disp.print(">");
+        else disp.print(" ");
+        
+        disp.print(testOpts[idx]);
+
+        // [TEST 1] HEAP MONITOR IN TEMPO REALE
+        if(idx == 0) {
+            disp.setCursor(80, yPos);
+            disp.print(ESP.getFreeHeap());
+            disp.print("b");
+        }
+    }
+    drawScrollbar(testOptsCount, state.cursor);
+}
+
 void UI::renderScanList() {
     auto& disp = Hardware::getInstance().getDisplay();
     if(scanCount == 0) {
@@ -292,7 +321,6 @@ void UI::renderScanList() {
         if(idx == state.cursor) disp.print(">");
         else disp.print(" ");
         
-    
         char ssidBuf[16];
         snprintf(ssidBuf, sizeof(ssidBuf), "%-14.14s", ap.ssid);
         disp.print(ssidBuf);
@@ -329,6 +357,7 @@ void UI::handleInput(int key) {
     if(state.menuLvl == 3) max = rf24OptsCount - 1;
     if(state.menuLvl == 4) max = evilTwinOptsCount - 1;
     if(state.menuLvl == 5) max = defenseOptsCount - 1;
+    if(state.menuLvl == 6) max = testOptsCount - 1; // <--- AGGIUNTO IL CHECK PER LIVELLO 6
     if(state.menuLvl == 10) max = (scanCount > 0) ? (int)scanCount - 1 : 0;
     
     if(state.cursor < 0) state.cursor = 0;
@@ -346,31 +375,26 @@ void UI::executeAction(int index) {
         else if(index == 2) { state.menuLvl = 3; state.cursor = 0; }
         else if(index == 3) { state.menuLvl = 4; state.cursor = 0; }
         else if(index == 4) { state.menuLvl = 5; state.cursor = 0; }
+        else if(index == 5) { state.menuLvl = 6; state.cursor = 0; } // <--- Accesso al Test Menu
     }
     else if(state.menuLvl == 1) { // WiFi Menu
         if(index == 0) { // Scan
             Hardware::getInstance().drawHeader("SCANNING...", true);
             Hardware::getInstance().getDisplay().display();
             
-            //  Zero-Allocation Scan Call
             scanCount = AttackEngine::getInstance().scanNetworks(scanResults, MAX_SCAN_RESULTS);
-            
-            //  Handle empty scan result
-            if(scanCount == 0) {
-                // Keep scanCount 0, renderScanList handles the "NO TARGETS" msg
-            }
             
             state.menuLvl = 10; // View Results
             state.cursor = 0;
         }
-        else if(index == 1) { // Deauth (Blind/Last Target)
+        else if(index == 1) { // Deauth
              AttackEngine::getInstance().setAttack(AttackType::DEAUTH_TARGET);
         }
         else if(index == 3) { // Probe Sniff
              AttackEngine::getInstance().setAttack(AttackType::PROBE_SNIFF);
         }
     }
-    else if(state.menuLvl == 2) {
+    else if(state.menuLvl == 2) { // BLE
         if(index == 0) {
             state.currentAttack = AttackType::BLE_SOUR;
             AttackEngine::getInstance().setAttack(AttackType::BLE_SOUR);
@@ -388,7 +412,7 @@ void UI::executeAction(int index) {
             AttackEngine::getInstance().setAttack(AttackType::BLE_GOOGLE);
         }
     }
-    else if(state.menuLvl == 3) {
+    else if(state.menuLvl == 3) { // RF24
         if(index == 0) {
             state.currentAttack = AttackType::RF_SCAN;
             AttackEngine::getInstance().setAttack(AttackType::RF_SCAN);
@@ -401,7 +425,7 @@ void UI::executeAction(int index) {
             Hardware::getInstance().scanSpectrum(rfSpectrum);
         }
     }
-    else if(state.menuLvl == 4) {
+    else if(state.menuLvl == 4) { // Evil Twin
         if(index == 0) {
             WebInterface::getInstance().start(true);
             state.currentAttack = AttackType::EVIL_TWIN;
@@ -426,7 +450,7 @@ void UI::executeAction(int index) {
             state.cursor = 0;
         }
     }
-    else if(state.menuLvl == 5) {
+    else if(state.menuLvl == 5) { // Defense
         if(index == 0) {
             state.currentAttack = AttackType::DEAUTH_DETECT;
             AttackEngine::getInstance().setAttack(AttackType::DEAUTH_DETECT);
@@ -442,8 +466,31 @@ void UI::executeAction(int index) {
             disp.display();
             delay(2000);
         }
+    } 
+    else if(state.menuLvl == 6) { // TEST SUITE
+        if(index == 0) { 
+            // [TEST 1] SHOW HEAP
+            if(ENABLE_SERIAL_LOG) Serial.printf("[TEST] Heap: %d bytes\n", ESP.getFreeHeap());
+        }
+        else if(index == 1) { 
+            // [TEST 2] FORCE WDT
+            Hardware::getInstance().drawHeader("WDT FREEZE...", true);
+            Hardware::getInstance().getDisplay().display();
+            while(true) {}
+        }
+        else if(index == 2) {
+            // [TEST 3] FILL NVS
+            Hardware::getInstance().drawHeader("FILLING NVS...", true);
+            Hardware::getInstance().getDisplay().display();
+            for(int i=0; i<60; i++) { 
+                char junk[32];
+                snprintf(junk, 32, "TEST_USER_%d:PASS", i);
+                Hardware::getInstance().saveCred(junk);
+                delay(10);
+            }
+        }
     }
-    else if(state.menuLvl == 10) {
+    else if(state.menuLvl == 10) { // Scan Results
         if(scanCount > 0) {
             APInfo& target = scanResults[index];
             AttackEngine::getInstance().setTarget(target.bssid, target.ch);
@@ -452,3 +499,5 @@ void UI::executeAction(int index) {
         }
     }
 }
+
+// Chiude il Namespace (se presente) o fine file

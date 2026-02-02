@@ -5,12 +5,14 @@
  */
 
 #include <Arduino.h>
+#include <esp_task_wdt.h> 
 #include "config.h"
 #include "hardware.h"
 #include "attacks.h"
 #include "ui.h"
 #include "web_interface.h"
 #include "nvs_flash.h" 
+
 // --- GLOBALS ---
 TaskHandle_t attackTaskHandle = NULL;
 
@@ -55,6 +57,9 @@ void setup() {
 
     // 3. Initialize Engines
     AttackEngine::getInstance().init();
+    
+    // [IMPORTANTE] UI Init contiene delay lunghi e attesa utente.
+    // Non attivare il Watchdog prima di questo punto!
     UI::getInstance().init();
     
     // 4. Create Attack Task
@@ -69,6 +74,12 @@ void setup() {
         }
     }
     
+    // [FIX BOOT LOOP] ATTIVA IL WATCHDOG SOLO ALLA FINE
+    // Ora che il boot è finito e l'utente ha confermato, attiviamo la protezione.
+    Serial.println("[WDT] Arming Watchdog System...");
+    esp_task_wdt_init(WATCHDOG_TIMEOUT_MS / 1000, true); 
+    esp_task_wdt_add(NULL); 
+    
     if (ENABLE_SERIAL_LOG) Serial.println("[BOOT] Leviathan OS v 0.1.0 alpha (RTOS OK)");
 }
 
@@ -76,6 +87,9 @@ void loop() {
     // Main loop handles UI and Web 
     UI::getInstance().update();
     WebInterface::getInstance().update();
+    
+    // Feed the dog (Reset timer)
+    esp_task_wdt_reset(); 
     
     vTaskDelay(5 / portTICK_PERIOD_MS);
 }

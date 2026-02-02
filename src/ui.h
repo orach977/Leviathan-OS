@@ -37,6 +37,7 @@ private:
     void renderEvilTwinMenu();
     void renderDefenseMenu();
     void renderScanList();
+    void renderTestMenu();
     
     // Actions
     void handleInput(int key);
