@@ -34,8 +34,8 @@ const char* defenseOpts[] = {"DEAUTH DETECT", "LOGS", "BACK"};
 const int defenseOptsCount = 3;
 
 
-const char* testOpts[] = {"SHOW HEAP", "FORCE WDT", "FILL NVS", "BACK"};
-const int testOptsCount = 4;
+const char* testOpts[] = {"SHOW HEAP", "FORCE WDT", "FILL NVS", "HW CHECK", "BACK"};
+const int testOptsCount = 5;
 
 UI& UI::getInstance() {
     static UI instance;
@@ -467,19 +467,16 @@ void UI::executeAction(int index) {
             delay(2000);
         }
     } 
-    else if(state.menuLvl == 6) { // TEST SUITE
+    else if(state.menuLvl == 6) { 
         if(index == 0) { 
-            // [TEST 1] SHOW HEAP
             if(ENABLE_SERIAL_LOG) Serial.printf("[TEST] Heap: %d bytes\n", ESP.getFreeHeap());
         }
         else if(index == 1) { 
-            // [TEST 2] FORCE WDT
             Hardware::getInstance().drawHeader("WDT FREEZE...", true);
             Hardware::getInstance().getDisplay().display();
             while(true) {}
         }
         else if(index == 2) {
-            // [TEST 3] FILL NVS
             Hardware::getInstance().drawHeader("FILLING NVS...", true);
             Hardware::getInstance().getDisplay().display();
             for(int i=0; i<60; i++) { 
@@ -488,6 +485,31 @@ void UI::executeAction(int index) {
                 Hardware::getInstance().saveCred(junk);
                 delay(10);
             }
+        }
+        else if(index == 3) {
+            Hardware::getInstance().drawHeader("HW DIAGNOSTIC...", true);
+            auto& disp = Hardware::getInstance().getDisplay();
+            disp.display();
+            
+            bool nrf_ok = Hardware::getInstance().getRadio().isChipConnected();
+            bool wifi_ok = (WiFi.status() != WL_NO_SHIELD);
+            
+            disp.clearDisplay();
+            disp.setCursor(0, 0);
+            disp.print("DIAG REPORT:");
+            disp.drawFastHLine(0, 8, 128, WHITE);
+            
+            disp.setCursor(0, 12);
+            disp.print("NRF24 RADIO: ");
+            disp.print(nrf_ok ? "OK" : "FAIL");
+            
+            disp.setCursor(0, 22);
+            disp.print("WIFI STACK:  ");
+            disp.print(wifi_ok ? "OK" : "FAIL");
+            
+            disp.display();
+            
+            while(Hardware::getInstance().getKey() == 0) { delay(50); }
         }
     }
     else if(state.menuLvl == 10) { // Scan Results

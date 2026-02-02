@@ -131,22 +131,24 @@ A differenza dei tool hobbistici, Leviathan è costruito per non fallire mai dur
 ##  Reliability & Diagnostics / Affidabilità e Diagnostica
 
 ### English
-To meet **MIL-STD** reliability requirements, the firmware includes an on-board Diagnostic Suite accessible via the `TEST SUITE` menu. This allows operators to verify hardware integrity before deployment.
+To meet  reliability requirements, the firmware includes an on-board Diagnostic Suite accessible via the `TEST SUITE` menu. This allows operators to verify hardware integrity before deployment.
 
 | Test | Function | Compliance Check |
 | :--- | :--- | :--- |
 | **SHOW HEAP** | Real-time RAM monitor | Detects memory leaks (value must remain stable). |
 | **FORCE WDT** | Simulates a CPU freeze | Verifies the Watchdog Timer. System **MUST** reboot automatically in 5s. |
 | **FILL NVS** | Storage stress test | Attempts to overflow credentials storage. Verifies safety limits and memory protection. |
+| **HW CHECK** | Hardware diagnostic | Verifies NRF24 radio SPI connection and WiFi stack availability. |
 
 ### Italiano
-Per soddisfare i requisiti di affidabilità **MIL-STD**, il firmware include una Suite Diagnostica integrata accessibile dal menu `TEST SUITE`. Permette agli operatori di verificare l'integrità hardware prima del deployment.
+Per soddisfare i requisiti di affidabilità , il firmware include una Suite Diagnostica integrata accessibile dal menu `TEST SUITE`. Permette agli operatori di verificare l'integrità hardware prima del deployment.
 
 | Test | Funzione | Verifica Conformità |
 | :--- | :--- | :--- |
 | **SHOW HEAP** | Monitor RAM real-time | Rileva memory leak (il valore deve restare stabile). |
 | **FORCE WDT** | Simula freeze della CPU | Verifica il Watchdog Timer. Il sistema **DEVE** riavviarsi automaticamente in 5s. |
 | **FILL NVS** | Stress test storage | Tenta di saturare l'archivio credenziali. Verifica i limiti di sicurezza e la protezione memoria. |
+| **HW CHECK** | Diagnostica hardware | Verifica connessione SPI radio NRF24 e disponibilità stack WiFi. |
 
 ---
 
@@ -355,6 +357,7 @@ Main Menu
     ├── SHOW HEAP
     ├── FORCE WDT
     ├── FILL NVS
+    ├── HW CHECK
     └── BACK
 ```
 
@@ -402,6 +405,7 @@ Menu Principale
     ├── SHOW HEAP
     ├── FORCE WDT
     ├── FILL NVS
+    ├── HW CHECK
     └── BACK
 ```
 
