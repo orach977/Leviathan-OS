@@ -9,6 +9,7 @@
 #include "hardware.h"
 #include "attacks.h"
 #include "web_interface.h"
+#include <esp_task_wdt.h>
 
 // [UX] Refresh Rate Limit (20 FPS)
 #define UI_REFRESH_RATE_MS 50 
@@ -509,7 +510,10 @@ void UI::executeAction(int index) {
             
             disp.display();
             
-            while(Hardware::getInstance().getKey() == 0) { delay(50); }
+            while(Hardware::getInstance().getKey() == 0) { 
+                esp_task_wdt_reset();
+                delay(50); 
+            }
         }
     }
     else if(state.menuLvl == 10) { // Scan Results

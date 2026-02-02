@@ -44,7 +44,7 @@ void setup() {
 
     // --- TEST LED ---
     Serial.println("loading test LEDs...");
-     // ----------------------------------------------
+  
     pinMode(3, OUTPUT); 
     pinMode(4, OUTPUT); 
     
@@ -58,8 +58,6 @@ void setup() {
     // 3. Initialize Engines
     AttackEngine::getInstance().init();
     
-    // [IMPORTANTE] UI Init contiene delay lunghi e attesa utente.
-    // Non attivare il Watchdog prima di questo punto!
     UI::getInstance().init();
     
     // 4. Create Attack Task
@@ -74,8 +72,8 @@ void setup() {
         }
     }
     
-    // [FIX BOOT LOOP] ATTIVA IL WATCHDOG SOLO ALLA FINE
-    // Ora che il boot è finito e l'utente ha confermato, attiviamo la protezione.
+    // arm the watchdog
+  
     Serial.println("[WDT] Arming Watchdog System...");
     esp_task_wdt_init(WATCHDOG_TIMEOUT_MS / 1000, true); 
     esp_task_wdt_add(NULL); 
