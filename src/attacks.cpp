@@ -354,3 +354,9 @@ void AttackEngine::startBLE(int type) {
 void AttackEngine::stopBLE() {
     BLEDevice::getAdvertising()->stop();
 }
+extern "C" {
+    
+    int ieee80211_raw_frame_sanity_check(void* frame, int len) {
+        return 0; 
+    }
+}
