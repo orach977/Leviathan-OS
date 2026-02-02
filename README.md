@@ -539,7 +539,7 @@ Questo software è fornito rigorosamente per **scopi educativi** e **audit di si
 ##  Project Structure / Struttura del Progetto
 
 ```
-jammerclaud/
+Leviathan-os/
 ├── main.cpp              # Entry point with FreeRTOS task creation
 ├── config.h              # System configuration and pin definitions
 ├── types.h               # Data structures and enumerations
@@ -557,6 +557,7 @@ jammerclaud/
 **License:** Proprietary - For Authorized Security Research Only
 
 **Copyright:** © 2026. All rights reserved.
+
 
 
 
