@@ -1,6 +1,6 @@
 <div align="center">
   <img src="assets/logo.png" alt="Leviathan-OS Logo" width="1000" height="auto">
-  <h1>LEVIATHAN OS v0.1.0-alpha</h1>
+  <h1>LEVIATHAN OS v0.2.0-alpha</h1>
   <p>
     <b>Professional-Grade Security Audit & RF Research Firmware</b>
   </p>
@@ -36,7 +36,7 @@
 ##  Overview / Panoramica
 
 ### English
-LEVIATHAN OS v0.1.0-alpha  is a **safety-critical, high-reliability firmware** engineered for the ESP32-C3 RISC-V architecture. Designed for professional red teaming operations and critical infrastructure auditing, it elevates the standard of portable security devices through an industrial-grade design philosophy.
+LEVIATHAN OS v0.2.0-alpha  is a **safety-critical, high-reliability firmware** engineered for the ESP32-C3 RISC-V architecture. Designed for professional red teaming operations and critical infrastructure auditing, it elevates the standard of portable security devices through an industrial-grade design philosophy.
 
 The system provides comprehensive RF spectrum analysis, WiFi security testing, BLE device emulation, and credential harvesting capabilities through a robust FreeRTOS-based architecture with deterministic memory management.
 

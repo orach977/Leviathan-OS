@@ -28,7 +28,7 @@ void setup() {
     // 0. Serial Init
     Serial.begin(115200);
     delay(2000); 
-    Serial.println("\n--- [ Leviathan OS v 0.1.0 alpha BOOT ] ---");
+    Serial.println("\n--- [ Leviathan OS v 0.2.0 alpha BOOT ] ---");
 
     // 1. Initialize NVS Flash
     esp_err_t ret = nvs_flash_init();

@@ -59,7 +59,7 @@ void UI::init() {
     disp.print("LEVIATHAN");
     disp.setTextSize(1);
     disp.setCursor(35, 25);
-    disp.print("v0.1.0-alpha");
+    disp.print("v0.2.0-alpha");
     disp.display();
     delay(1500);
 
